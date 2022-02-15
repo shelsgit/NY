@@ -1,0 +1,13 @@
+name: "cars"
+output_dir: "docs"
+navbar:
+  title: "Reading Report Card - NY"
+  left:
+  - text: "Home"
+    href: index.html
+  - text: "County Report Card"
+    href: CountySelect.html
+output:
+  html_document:
+theme: cosmo
+
