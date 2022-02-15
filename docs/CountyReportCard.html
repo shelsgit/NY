@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>CountyReportCard</title>
+
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="site_libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="site_libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="site_libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Reading Report Card - NY</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="CountySelect.html">County Report Card</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">CountyReportCard</h1>
+
+</div>
+
+
+<div id="year-2016" class="section level4">
+<h4>Year: 2016</h4>
+</div>
+<div id="county-monroe" class="section level4">
+<h4>County: Monroe</h4>
+<!-- #### Cohort: Economically Disadvantaged, Grade:3   -->
+<div id="htmlwidget-3cb2597f744646b434ac" style="width:900px;height:450px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-3cb2597f744646b434ac">{"x":{"visdat":{"142826da6d8b":["function () ","plotlyVisDat"]},"cur_data":"142826da6d8b","attrs":{"142826da6d8b":{"x":{},"y":{},"orientation":"h","marker":{"color":"rgba(24,161,205, 1)","line":{"color":"green","width":1}},"name":"% Proficient","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar"},"142826da6d8b.1":{"x":{},"y":{},"orientation":"h","marker":{"color":"rgba(215, 49, 41, 1)","line":{"color":"green","width":1}},"name":"% Not Proficient","alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"bar","text":[1996,112,118,329,28,112,58,104,28,84,21,20,154,71,66,80,55,14],"texttemplate":"(%{text})","textfont":{"size":10},"textposition":"outside","inherit":true}},"layout":{"width":900,"height":450,"margin":{"b":40,"l":60,"t":25,"r":10},"annotations":[{"text":"7%        ","x":7,"y":"ROCHESTER CITY SD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"20%        ","x":20,"y":"EAST IRONDEQUOIT CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"22%        ","x":22,"y":"GATES-CHILI CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"25%        ","x":25,"y":"GREECE CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"25%        ","x":25,"y":"HONEOYE FALLS-LIMA CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"25%        ","x":25,"y":"WEBSTER CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"26%        ","x":26,"y":"FAIRPORT CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"26%        ","x":26,"y":"BROCKPORT CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"29%        ","x":29,"y":"BRIGHTON CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"30%        ","x":30,"y":"CHURCHVILLE-CHILI CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"33%        ","x":33,"y":"EAST ROCHESTER UFSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"35%        ","x":35,"y":"WHEATLAND-CHILI CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"37%        ","x":37,"y":"RUSH-HENRIETTA CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"41%        ","x":41,"y":"HILTON CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"47%        ","x":47,"y":"PENFIELD CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"49%        ","x":49,"y":"WEST IRONDEQUOIT CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"49%        ","x":49,"y":"SPENCERPORT CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"text":"57%        ","x":57,"y":"PITTSFORD CSD","xref":"x","yref":"y","font":{"color":"white","size":10},"showarrow":false},{"x":95,"y":"PITTSFORD CSD","text":"95%","xref":"x","yref":"y","showarrow":true,"arrowhead":0,"ax":20,"ay":-20}],"barmode":"stack","xaxis":{"domain":[0,1],"automargin":true,"title":""},"yaxis":{"domain":[0,1],"automargin":true,"title":"","categoryorder":"array","categoryarray":[7,20,22,25,25,25,26,26,29,30,33,35,37,41,47,49,49,57],"tickangle":0,"ticksuffix":" ","type":"category"},"legend":{"orientation":"h","xanchor":"center","x":0.5,"y":100},"bargap":5,"shapes":[{"type":"line","y0":0,"y1":1,"yref":"paper","x0":95,"x1":95,"line":{"color":"black","dash":"dash","annotation_text":"95%"}}],"title":{"text":"<i><b><br />>95% of ALL People Are Capable of Reading<\/i><\/b>","font":{"family":"Arial","color":"black","size":14},"x":0.75,"y":0.92},"hovermode":"closest","showlegend":true},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false,"displayModeBar":false},"data":[{"x":[7,20,22,25,25,25,26,26,29,30,33,35,37,41,47,49,49,57],"y":["ROCHESTER CITY SD","EAST IRONDEQUOIT CSD","GATES-CHILI CSD","GREECE CSD","HONEOYE FALLS-LIMA CSD","WEBSTER CSD","FAIRPORT CSD","BROCKPORT CSD","BRIGHTON CSD","CHURCHVILLE-CHILI CSD","EAST ROCHESTER UFSD","WHEATLAND-CHILI CSD","RUSH-HENRIETTA CSD","HILTON CSD","PENFIELD CSD","WEST IRONDEQUOIT CSD","SPENCERPORT CSD","PITTSFORD CSD"],"orientation":"h","marker":{"color":"rgba(24,161,205, 1)","line":{"color":"green","width":1}},"name":"% Proficient","type":"bar","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"xaxis":"x","yaxis":"y","frame":null},{"x":[93,80,78,75,75,75,74,74,71,70,67,65,63,59,53,51,51,43],"y":["ROCHESTER CITY SD","EAST IRONDEQUOIT CSD","GATES-CHILI CSD","GREECE CSD","HONEOYE FALLS-LIMA CSD","WEBSTER CSD","FAIRPORT CSD","BROCKPORT CSD","BRIGHTON CSD","CHURCHVILLE-CHILI CSD","EAST ROCHESTER UFSD","WHEATLAND-CHILI CSD","RUSH-HENRIETTA CSD","HILTON CSD","PENFIELD CSD","WEST IRONDEQUOIT CSD","SPENCERPORT CSD","PITTSFORD CSD"],"orientation":"h","marker":{"color":"rgba(215, 49, 41, 1)","line":{"color":"green","width":1}},"name":"% Not Proficient","type":"bar","text":[1996,112,118,329,28,112,58,104,28,84,21,20,154,71,66,80,55,14],"texttemplate":["(%{text})","(%{text})","(%{text})","(%{text})","(%{text})","(%{text})","(%{text})","(%{text})","(%{text})","(%{text})","(%{text})","(%{text})","(%{text})","(%{text})","(%{text})","(%{text})","(%{text})","(%{text})"],"textfont":{"size":10},"textposition":["outside","outside","outside","outside","outside","outside","outside","outside","outside","outside","outside","outside","outside","outside","outside","outside","outside","outside"],"error_y":{"color":"rgba(255,127,14,1)"},"error_x":{"color":"rgba(255,127,14,1)"},"xaxis":"x","yaxis":"y","frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="references-notes" class="section level1">
+<h1>References, Notes:</h1>
+<ul>
+<li>Data from: <a href="https://data.nysed.gov/downloads.php">NY State Report Card</a><br />
+</li>
+<li>Students Included: 3rd graders, “Economically Disadvantaged” - <a href="https://www.careads.org/why-these-students">Why?</a></li>
+<li>Districts Included: Those which tested =&gt; 10 Students. Total tested is in ().<br />
+</li>
+<li>Total Districts: 18</li>
+</ul>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
